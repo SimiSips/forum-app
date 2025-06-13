@@ -107,15 +107,19 @@
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
-    <!--&lt;!&ndash; Filters &ndash;&gt;
+    <!-- Filters -->
 
-    &lt;!&ndash; Character Encoding Filter &ndash;&gt;
+    <!-- Character Encoding Filter -->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>
         <filter-class>com.forum.filter.CharacterEncodingFilter</filter-class>
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
         </init-param>
     </filter>
 
@@ -124,7 +128,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    &lt;!&ndash; Authentication Filter &ndash;&gt;
+    <!-- Authentication Filter -->
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.forum.filter.AuthenticationFilter</filter-class>
@@ -132,13 +136,16 @@
 
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/forum/*</url-pattern>
+        <url-pattern>/forum/create-topic</url-pattern>
+        <url-pattern>/forum/my-topics</url-pattern>
+        <url-pattern>/forum/add-comment</url-pattern>
+        <url-pattern>/forum/add-reply</url-pattern>
         <url-pattern>/user/profile</url-pattern>
         <url-pattern>/user/update-profile</url-pattern>
         <url-pattern>/user/change-password</url-pattern>
     </filter-mapping>
 
-    &lt;!&ndash; CORS Filter for Web Service &ndash;&gt;
+    <!-- CORS Filter for Web Service -->
     <filter>
         <filter-name>CORSFilter</filter-name>
         <filter-class>com.forum.filter.CORSFilter</filter-class>
@@ -149,17 +156,17 @@
         <url-pattern>/api/*</url-pattern>
     </filter-mapping>
 
-    &lt;!&ndash; Listeners &ndash;&gt;
+    <!-- Listeners -->
 
-    &lt;!&ndash; Application Context Listener &ndash;&gt;
+    <!-- Application Context Listener -->
     <listener>
         <listener-class>com.forum.listener.ApplicationContextListener</listener-class>
     </listener>
 
-    &lt;!&ndash; Session Listener &ndash;&gt;
+    <!-- Session Listener -->
     <listener>
         <listener-class>com.forum.listener.SessionListener</listener-class>
-    </listener>-->
+    </listener>
 
     <!-- MIME Type Mappings -->
     <mime-mapping>
