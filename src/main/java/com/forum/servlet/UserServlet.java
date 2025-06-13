@@ -466,15 +466,12 @@ public class UserServlet extends HttpServlet {
         String resetToken = userService.initiatePasswordReset(email);
 
         if (resetToken != null) {
-            // In a real application, you would send an email with the reset link
-            // For demo purposes, we'll just show the token
-            request.setAttribute("success", "Password reset instructions have been sent to your email.");
-            request.setAttribute("resetToken", resetToken); // For demo only
+            // For demo: redirect to reset-password page using token
+            response.sendRedirect(request.getContextPath() + "/user/reset-password?token=" + resetToken);
         } else {
             request.setAttribute("error", "Email not found or reset failed");
+            request.getRequestDispatcher("/WEB-INF/jsp/forgot-password.jsp").forward(request, response);
         }
-
-        request.getRequestDispatcher("/WEB-INF/jsp/forgot-password.jsp").forward(request, response);
     }
 
     /**

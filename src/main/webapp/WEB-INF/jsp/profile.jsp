@@ -1,271 +1,160 @@
-<%@ include file="includes/taglibs.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <%@ include file="includes/header.jsp" %>
-<title>Profile - ${user.fullName} - Forum Application</title>
+<title>My Profile - Forum Application</title>
 
-<body>
+<body class="bg-gray-50 min-h-screen">
     <%@ include file="includes/navigation.jsp" %>
 
-    <div class="container mt-4 mb-5">
-        <div class="row">
-            <!-- Profile Sidebar -->
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <div class="avatar mx-auto mb-3" style="width: 100px; height: 100px; font-size: 2rem;">
-                            ${fn:substring(user.firstName, 0, 1)}${fn:substring(user.lastName, 0, 1)}
-                        </div>
-                        <h4 class="card-title">${user.fullName}</h4>
-                        <p class="text-muted">${user.email}</p>
-                        <div class="row text-center mt-4">
-                            <div class="col-6">
-                                <div class="border-end">
-                                    <h5 class="text-primary mb-0">${userTopicCount}</h5>
-                                    <small class="text-muted">Topics</small>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <h5 class="text-success mb-0">${userCommentCount}</h5>
-                                <small class="text-muted">Comments</small>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <small class="text-muted">
-                                <i class="fas fa-calendar-alt me-1"></i>
-                                Member since: <fmt:formatDate value="${user.dateRegistered}" pattern="MMM yyyy"/>
-                            </small>
-                        </div>
-                        <c:if test="${user.lastLogin != null}">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="fas fa-clock me-1"></i>
-                                    Last login: <fmt:formatDate value="${user.lastLogin}" pattern="MMM dd, yyyy HH:mm"/>
-                                </small>
-                            </div>
-                        </c:if>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-8" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="${pageContext.request.contextPath}/"
+                       class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+                        <span class="text-sm font-medium text-gray-700">My Profile</span>
                     </div>
-                </div>
+                </li>
+            </ol>
+        </nav>
 
-                <!-- Quick Actions -->
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h6 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h6>
+        <!-- Profile Header -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 mb-8">
+            <div class="flex items-center">
+                <div class="w-24 h-24 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center mr-6">
+                    <span class="text-white text-3xl font-bold">
+                        ${fn:substring(user.firstName, 0, 1).toUpperCase()}
+                    </span>
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                        ${user.firstName} ${user.lastName}
+                    </h1>
+                    <p class="text-gray-600 mb-1">
+                        @${fn:toLowerCase(user.firstName)}${fn:toLowerCase(user.lastName)}
+                    </p>
+                    <p class="text-gray-500 text-sm">
+                        <i class="fas fa-calendar-alt mr-1"></i>
+                        Member since <fmt:formatDate value="${user.dateRegistered}" pattern="MMMM yyyy"/>
+                    </p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="openEditModal()"
+                            class="bg-primary-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors duration-200">
+                        <i class="fas fa-edit mr-2"></i>Edit Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-comments text-blue-600 text-xl"></i>
                     </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a href="${pageContext.request.contextPath}/forum/create-topic"
-                               class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>Create New Topic
-                            </a>
-                            <a href="${pageContext.request.contextPath}/forum/my-topics"
-                               class="btn btn-outline-primary">
-                                <i class="fas fa-list me-2"></i>My Topics
-                            </a>
-                            <a href="${pageContext.request.contextPath}/forum"
-                               class="btn btn-outline-secondary">
-                                <i class="fas fa-comments me-2"></i>Browse Forum
-                            </a>
-                        </div>
+                    <div>
+                        <div class="text-2xl font-bold text-gray-900">${userTopicCount}</div>
+                        <div class="text-sm text-gray-600">Topics Created</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Main Content -->
-            <div class="col-md-8">
-                <!-- Success/Error Messages -->
-                <c:if test="${not empty success}">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle me-2"></i>
-                        ${success}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-comment text-green-600 text-xl"></i>
                     </div>
-                </c:if>
-
-                <c:if test="${not empty error}">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        ${error}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <div>
+                        <div class="text-2xl font-bold text-gray-900">${userCommentCount}</div>
+                        <div class="text-sm text-gray-600">Comments Posted</div>
                     </div>
-                </c:if>
+                </div>
+            </div>
+        </div>
 
-                <!-- Profile Information Tab -->
-                <div class="card">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs" id="profileTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="info-tab" data-bs-toggle="tab"
-                                        data-bs-target="#info" type="button" role="tab">
-                                    <i class="fas fa-user me-2"></i>Profile Information
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="password-tab" data-bs-toggle="tab"
-                                        data-bs-target="#password" type="button" role="tab">
-                                    <i class="fas fa-lock me-2"></i>Change Password
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+        <!-- Account Information -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Account Information</h2>
 
-                    <div class="card-body">
-                        <div class="tab-content" id="profileTabsContent">
-                            <!-- Profile Information Tab -->
-                            <div class="tab-pane fade show active" id="info" role="tabpanel">
-                                <form action="${pageContext.request.contextPath}/user/update-profile" method="post">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="firstName" class="form-label">
-                                                <i class="fas fa-user me-1"></i>First Name *
-                                            </label>
-                                            <input type="text" class="form-control" id="firstName" name="firstName"
-                                                   value="${user.firstName}" required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="lastName" class="form-label">
-                                                <i class="fas fa-user me-1"></i>Last Name *
-                                            </label>
-                                            <input type="text" class="form-control" id="lastName" name="lastName"
-                                                   value="${user.lastName}" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">
-                                            <i class="fas fa-envelope me-1"></i>Email Address
-                                        </label>
-                                        <input type="email" class="form-control" id="email" value="${user.email}"
-                                               disabled readonly>
-                                        <div class="form-text">Email address cannot be changed.</div>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label for="phone" class="form-label">
-                                            <i class="fas fa-phone me-1"></i>Phone Number
-                                        </label>
-                                        <input type="tel" class="form-control" id="phone" name="phone"
-                                               value="${user.phone}" placeholder="Enter your phone number">
-                                    </div>
-
-                                    <div class="d-flex justify-content-between">
-                                        <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
-                                            <i class="fas fa-undo me-2"></i>Reset
-                                        </button>
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save me-2"></i>Update Profile
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <!-- Change Password Tab -->
-                            <div class="tab-pane fade" id="password" role="tabpanel">
-                                <form action="${pageContext.request.contextPath}/user/change-password" method="post"
-                                      id="passwordForm">
-                                    <div class="mb-3">
-                                        <label for="currentPassword" class="form-label">
-                                            <i class="fas fa-lock me-1"></i>Current Password *
-                                        </label>
-                                        <input type="password" class="form-control" id="currentPassword"
-                                               name="currentPassword" required placeholder="Enter your current password">
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="newPassword" class="form-label">
-                                            <i class="fas fa-key me-1"></i>New Password *
-                                        </label>
-                                        <input type="password" class="form-control" id="newPassword"
-                                               name="newPassword" required placeholder="Enter your new password">
-                                        <div class="form-text">
-                                            <small class="text-muted">
-                                                Password must be at least 8 characters with uppercase, lowercase, number, and special character.
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label for="confirmNewPassword" class="form-label">
-                                            <i class="fas fa-key me-1"></i>Confirm New Password *
-                                        </label>
-                                        <input type="password" class="form-control" id="confirmNewPassword"
-                                               required placeholder="Confirm your new password">
-                                        <div class="invalid-feedback" id="passwordMismatchFeedback">
-                                            Passwords do not match.
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between">
-                                        <a href="${pageContext.request.contextPath}/user/forgot-password"
-                                           class="btn btn-link text-decoration-none">
-                                            <i class="fas fa-question-circle me-1"></i>Forgot Password?
-                                        </a>
-                                        <button type="submit" class="btn btn-warning">
-                                            <i class="fas fa-key me-2"></i>Change Password
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+            <c:if test="${not empty param.updated}">
+                <div class="bg-green-50 border border-green-200 rounded-xl p-4 mb-6">
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-check text-white text-xs"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-green-700 text-sm">Profile updated successfully!</p>
                         </div>
                     </div>
                 </div>
+            </c:if>
 
-                <!-- Account Information -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i>Account Information</h6>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900">
+                        ${user.firstName}
                     </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <table class="table table-borderless table-sm">
-                                    <tr>
-                                        <td class="text-muted">User ID:</td>
-                                        <td>${user.userId}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted">Registration Date:</td>
-                                        <td><fmt:formatDate value="${user.dateRegistered}" pattern="MMMM dd, yyyy"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted">Account Status:</td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${user.active}">
-                                                    <span class="badge bg-success">Active</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="badge bg-danger">Inactive</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                    </tr>
-                                </table>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900">
+                        ${user.lastName}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900">
+                        ${user.email}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900">
+                        ${user.phone != null ? user.phone : 'Not provided'}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Member Since</label>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-gray-900">
+                        <fmt:formatDate value="${user.dateRegistered}" pattern="MMMM dd, yyyy"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Security Settings</h3>
+                <div class="space-y-3">
+                    <a href="${pageContext.request.contextPath}/user/reset-password"
+                       class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-key text-orange-600"></i>
                             </div>
-                            <div class="col-md-6">
-                                <table class="table table-borderless table-sm">
-                                    <tr>
-                                        <td class="text-muted">Topics Created:</td>
-                                        <td>
-                                            <span class="badge badge-custom">${userTopicCount}</span>
-                                            <a href="${pageContext.request.contextPath}/forum/my-topics"
-                                               class="ms-2 text-decoration-none">View All</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-muted">Comments Posted:</td>
-                                        <td><span class="badge badge-custom">${userCommentCount}</span></td>
-                                    </tr>
-                                    <c:if test="${user.lastLogin != null}">
-                                        <tr>
-                                            <td class="text-muted">Last Login:</td>
-                                            <td><fmt:formatDate value="${user.lastLogin}" pattern="MMM dd, yyyy HH:mm"/></td>
-                                        </tr>
-                                    </c:if>
-                                </table>
+                            <div>
+                                <div class="font-medium text-gray-900">Change Password</div>
+                                <div class="text-sm text-gray-500">Update your account password</div>
                             </div>
                         </div>
-                    </div>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -273,46 +162,89 @@
 
     <%@ include file="includes/footer.jsp" %>
 
+    <!-- Edit Profile Modal -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Edit Profile</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <form action="${pageContext.request.contextPath}/user/update-profile" method="post" class="space-y-4">
+                <div>
+                    <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                    <input type="text"
+                           id="firstName"
+                           name="firstName"
+                           value="${user.firstName}"
+                           required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200">
+                </div>
+
+                <div>
+                    <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                    <input type="text"
+                           id="lastName"
+                           name="lastName"
+                           value="${user.lastName}"
+                           required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200">
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           value="${user.email}"
+                           required
+                           disabled
+                           class="w-full px-4 py-3 border border-gray-200 bg-gray-100 rounded-lg text-gray-500">
+                </div>
+
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                    <input type="text"
+                           id="phone"
+                           name="phone"
+                           value="${user.phone}"
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200">
+                </div>
+
+                <div class="flex space-x-3 pt-4">
+                    <button type="submit"
+                            class="flex-1 bg-primary-500 text-white px-4 py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors duration-200">
+                        Save Changes
+                    </button>
+                    <button type="button"
+                            onclick="closeEditModal()"
+                            class="flex-1 bg-gray-100 text-gray-700 px-4 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordForm = document.getElementById('passwordForm');
-            const newPasswordInput = document.getElementById('newPassword');
-            const confirmPasswordInput = document.getElementById('confirmNewPassword');
-
-            // Password confirmation validation
-            confirmPasswordInput.addEventListener('input', function() {
-                const newPassword = newPasswordInput.value;
-                const confirmPassword = this.value;
-
-                if (confirmPassword && newPassword !== confirmPassword) {
-                    this.classList.add('is-invalid');
-                } else {
-                    this.classList.remove('is-invalid');
-                }
-            });
-
-            // Password form validation
-            passwordForm.addEventListener('submit', function(e) {
-                const newPassword = newPasswordInput.value;
-                const confirmPassword = confirmPasswordInput.value;
-
-                if (newPassword !== confirmPassword) {
-                    e.preventDefault();
-                    confirmPasswordInput.classList.add('is-invalid');
-                    alert('New passwords do not match!');
-                    return false;
-                }
-            });
-        });
-
-        function resetForm() {
-            const form = document.querySelector('#info form');
-            form.reset();
-            // Restore original values
-            document.getElementById('firstName').value = '${user.firstName}';
-            document.getElementById('lastName').value = '${user.lastName}';
-            document.getElementById('phone').value = '${user.phone}';
+        function openEditModal() {
+            document.getElementById('editModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
+        });
     </script>
 </body>
 </html>

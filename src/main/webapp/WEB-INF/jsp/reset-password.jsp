@@ -1,210 +1,180 @@
-<%@ include file="includes/taglibs.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <%@ include file="includes/header.jsp" %>
 <title>Reset Password - Forum Application</title>
 
-<body class="bg-light">
-    <div class="container d-flex align-items-center justify-content-center min-vh-100">
-        <div class="row justify-content-center w-100">
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow">
-                    <div class="card-header bg-success text-white text-center py-4">
-                        <h3 class="mb-0">
-                            <i class="fas fa-lock me-2"></i>Reset Password
-                        </h3>
-                        <p class="mb-0 mt-2">Create a new password for your account</p>
-                    </div>
-
-                    <div class="card-body p-4">
-                        <!-- Messages -->
-                        <c:if test="${not empty error}">
-                            <div class="alert alert-danger" role="alert">
-                                <i class="fas fa-exclamation-triangle me-2"></i>
-                                ${error}
-                            </div>
-                        </c:if>
-
-                        <div class="text-center mb-4">
-                            <i class="fas fa-key fa-3x text-success mb-3"></i>
-                            <p class="text-muted">
-                                Enter your new password below. Make sure it's strong and secure.
-                            </p>
-                        </div>
-
-                        <form action="${pageContext.request.contextPath}/user/reset-password" method="post"
-                              id="resetForm">
-                            <input type="hidden" name="token" value="${token}">
-
-                            <div class="mb-3">
-                                <label for="newPassword" class="form-label">
-                                    <i class="fas fa-key me-1"></i>New Password
-                                </label>
-                                <div class="input-group">
-                                    <input type="password" class="form-control" id="newPassword" name="newPassword"
-                                           required placeholder="Enter your new password">
-                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </div>
-                                <div class="form-text">
-                                    <small class="text-muted">
-                                        Password must be at least 8 characters with uppercase, lowercase, number, and special character.
-                                    </small>
-                                </div>
-                                <div class="mt-2">
-                                    <div class="progress" style="height: 5px;">
-                                        <div class="progress-bar" id="passwordStrength" role="progressbar"
-                                             style="width: 0%"></div>
-                                    </div>
-                                    <small class="text-muted" id="strengthText">Password strength: </small>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="confirmPassword" class="form-label">
-                                    <i class="fas fa-lock me-1"></i>Confirm Password
-                                </label>
-                                <input type="password" class="form-control" id="confirmPassword"
-                                       name="confirmPassword" required placeholder="Confirm your new password">
-                                <div class="invalid-feedback" id="passwordMismatch">
-                                    Passwords do not match.
-                                </div>
-                            </div>
-
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-success" id="submitBtn">
-                                    <i class="fas fa-check me-2"></i>Reset Password
-                                </button>
-                            </div>
-                        </form>
-
-                        <div class="text-center mt-4">
-                            <p class="mb-0">
-                                <a href="${pageContext.request.contextPath}/user/login"
-                                   class="text-decoration-none">
-                                    <i class="fas fa-arrow-left me-1"></i>Back to Login
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Security Tips -->
-                <div class="text-center mt-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h6 class="card-title">
-                                <i class="fas fa-shield-alt text-success me-2"></i>Security Tips
-                            </h6>
-                            <ul class="list-unstyled small text-muted mb-0">
-                                <li><i class="fas fa-check text-success me-2"></i>Use a unique password</li>
-                                <li><i class="fas fa-check text-success me-2"></i>Include numbers and symbols</li>
-                                <li><i class="fas fa-check text-success me-2"></i>Avoid personal information</li>
-                                <li><i class="fas fa-check text-success me-2"></i>Keep it confidential</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <!-- Logo and Header -->
+        <div class="text-center">
+            <div class="mx-auto w-16 h-16 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center mb-6">
+                <i class="fas fa-lock text-white text-2xl"></i>
             </div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Reset Your Password</h1>
+            <p class="text-gray-600">Enter your new password below</p>
+        </div>
+
+        <!-- Reset Password Form -->
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+            <form action="${pageContext.request.contextPath}/user/reset-password" method="post" class="space-y-6" id="resetForm">
+                <input type="hidden" name="token" value="${param.token}">
+
+                <!-- Error Message -->
+                <c:if test="${not empty param.error}">
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-exclamation text-white text-xs"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-red-700 text-sm">
+                                    <c:choose>
+                                        <c:when test="${param.error == 'invalid_token'}">
+                                            Invalid or expired reset token. Please request a new password reset.
+                                        </c:when>
+                                        <c:when test="${param.error == 'password_mismatch'}">
+                                            Passwords do not match. Please try again.
+                                        </c:when>
+                                        <c:otherwise>
+                                            Unable to reset password. Please try again.
+                                        </c:otherwise>
+                                    </c:choose>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+
+                <!-- New Password Field -->
+                <div>
+                    <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2 text-gray-400"></i>New Password
+                    </label>
+                    <div class="relative">
+                        <input type="password"
+                               id="newPassword"
+                               name="newPassword"
+                               required
+                               minlength="6"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200 text-gray-900 placeholder-gray-500 pr-12"
+                               placeholder="Enter your new password">
+                        <button type="button"
+                                onclick="togglePassword('newPassword')"
+                                class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-gray-600">
+                            <i id="newPassword-toggle-icon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div>
+                    <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2 text-gray-400"></i>Confirm New Password
+                    </label>
+                    <div class="relative">
+                        <input type="password"
+                               id="confirmPassword"
+                               name="confirmPassword"
+                               required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200 text-gray-900 placeholder-gray-500 pr-12"
+                               placeholder="Confirm your new password">
+                        <button type="button"
+                                onclick="togglePassword('confirmPassword')"
+                                class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-gray-600">
+                            <i id="confirmPassword-toggle-icon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div id="password-match" class="mt-1 text-xs hidden">
+                        <span id="password-match-text"></span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                        id="submitBtn"
+                        class="w-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white px-6 py-3 rounded-xl font-semibold text-lg hover:from-primary-600 hover:to-secondary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                    <i class="fas fa-save mr-2"></i>Reset Password
+                </button>
+            </form>
+        </div>
+
+        <!-- Back to Login -->
+        <div class="text-center">
+            <a href="${pageContext.request.contextPath}/user/login"
+               class="inline-flex items-center text-gray-500 hover:text-gray-700 transition-colors duration-200">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Login
+            </a>
         </div>
     </div>
 
-    <%@ include file="includes/footer.jsp" %>
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordInput = document.getElementById('newPassword');
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-            const togglePasswordBtn = document.getElementById('togglePassword');
-            const strengthBar = document.getElementById('passwordStrength');
-            const strengthText = document.getElementById('strengthText');
-            const form = document.getElementById('resetForm');
+        function togglePassword(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const toggleIcon = document.getElementById(fieldId + '-toggle-icon');
 
-            // Password visibility toggle
-            togglePasswordBtn.addEventListener('click', function() {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                this.querySelector('i').classList.toggle('fa-eye');
-                this.querySelector('i').classList.toggle('fa-eye-slash');
-            });
-
-            // Password strength checker
-            passwordInput.addEventListener('input', function() {
-                const password = this.value;
-                const strength = calculatePasswordStrength(password);
-
-                strengthBar.style.width = strength.percentage + '%';
-                strengthBar.className = 'progress-bar ' + strength.class;
-                strengthText.textContent = 'Password strength: ' + strength.text;
-            });
-
-            // Password confirmation checker
-            confirmPasswordInput.addEventListener('input', function() {
-                const password = passwordInput.value;
-                const confirmPassword = this.value;
-
-                if (confirmPassword && password !== confirmPassword) {
-                    this.classList.add('is-invalid');
-                } else {
-                    this.classList.remove('is-invalid');
-                }
-            });
-
-            // Form validation
-            form.addEventListener('submit', function(e) {
-                const password = passwordInput.value;
-                const confirmPassword = confirmPasswordInput.value;
-
-                if (password !== confirmPassword) {
-                    e.preventDefault();
-                    confirmPasswordInput.classList.add('is-invalid');
-                    alert('Passwords do not match!');
-                    return false;
-                }
-
-                // Check password strength
-                const strength = calculatePasswordStrength(password);
-                if (strength.score < 3) {
-                    e.preventDefault();
-                    alert('Please choose a stronger password.');
-                    return false;
-                }
-
-                // Show loading state
-                const submitBtn = document.getElementById('submitBtn');
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Resetting...';
-                submitBtn.disabled = true;
-            });
-
-            function calculatePasswordStrength(password) {
-                let score = 0;
-
-                if (password.length >= 8) score++;
-                if (password.length >= 12) score++;
-                if (/[a-z]/.test(password)) score++;
-                if (/[A-Z]/.test(password)) score++;
-                if (/[0-9]/.test(password)) score++;
-                if (/[^A-Za-z0-9]/.test(password)) score++;
-
-                let result = {
-                    score: score,
-                    percentage: (score / 6) * 100
-                };
-
-                if (score < 3) {
-                    result.text = 'Weak';
-                    result.class = 'bg-danger';
-                } else if (score < 5) {
-                    result.text = 'Medium';
-                    result.class = 'bg-warning';
-                } else {
-                    result.text = 'Strong';
-                    result.class = 'bg-success';
-                }
-
-                return result;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
             }
+        }
+
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const matchElement = document.getElementById('password-match');
+            const matchText = document.getElementById('password-match-text');
+
+            if (confirmPassword.length > 0) {
+                matchElement.classList.remove('hidden');
+                if (password === confirmPassword) {
+                    matchText.textContent = '✓ Passwords match';
+                    matchText.className = 'text-green-600';
+                } else {
+                    matchText.textContent = '✗ Passwords do not match';
+                    matchText.className = 'text-red-600';
+                }
+            } else {
+                matchElement.classList.add('hidden');
+            }
+        }
+
+        function validateForm() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            const isValid = password.length >= 6 && password === confirmPassword;
+            document.getElementById('submitBtn').disabled = !isValid;
+            return isValid;
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+
+            passwordInput.addEventListener('input', function() {
+                checkPasswordMatch();
+                validateForm();
+            });
+
+            confirmPasswordInput.addEventListener('input', function() {
+                checkPasswordMatch();
+                validateForm();
+            });
+
+            // Auto-focus password field
+            passwordInput.focus();
+
+            // Initial validation
+            validateForm();
         });
     </script>
 </body>
