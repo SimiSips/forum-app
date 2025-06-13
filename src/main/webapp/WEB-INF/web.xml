@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!-- Application Display Name -->
+    <display-name>Forum Application</display-name>
+
+    <!-- Application Description -->
+    <description>
+        Advanced Java Programming Forum Application
+        Created by: Simphiwe Radebe
+        A distributed forum application with JSP/Servlets frontend and web services backend
+    </description>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Context Parameters -->
+    <context-param>
+        <param-name>application.name</param-name>
+        <param-value>Forum Application</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>application.version</param-name>
+        <param-value>1.0.0</param-value>
+    </context-param>
+
+    <!-- Servlet Definitions -->
+
+    <!-- User Servlet -->
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>com.forum.servlet.UserServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/user/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Forum Servlet -->
+    <servlet>
+        <servlet-name>ForumServlet</servlet-name>
+        <servlet-class>com.forum.servlet.ForumServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ForumServlet</servlet-name>
+        <url-pattern>/forum/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Web Service Servlet -->
+    <servlet>
+        <servlet-name>ForumWebService</servlet-name>
+        <servlet-class>com.forum.webservice.ForumWebServiceServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ForumWebService</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Error Pages -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/jsp/error/404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/jsp/error/500.jsp</location>
+    </error-page>
+
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/jsp/error/general.jsp</location>
+    </error-page>
+
+    <!-- Security Constraints -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Protected Admin Area</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- Session Configuration -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure>
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
+    <!--&lt;!&ndash; Filters &ndash;&gt;
+
+    &lt;!&ndash; Character Encoding Filter &ndash;&gt;
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>com.forum.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    &lt;!&ndash; Authentication Filter &ndash;&gt;
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.forum.filter.AuthenticationFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/forum/*</url-pattern>
+        <url-pattern>/user/profile</url-pattern>
+        <url-pattern>/user/update-profile</url-pattern>
+        <url-pattern>/user/change-password</url-pattern>
+    </filter-mapping>
+
+    &lt;!&ndash; CORS Filter for Web Service &ndash;&gt;
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>com.forum.filter.CORSFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+
+    &lt;!&ndash; Listeners &ndash;&gt;
+
+    &lt;!&ndash; Application Context Listener &ndash;&gt;
+    <listener>
+        <listener-class>com.forum.listener.ApplicationContextListener</listener-class>
+    </listener>
+
+    &lt;!&ndash; Session Listener &ndash;&gt;
+    <listener>
+        <listener-class>com.forum.listener.SessionListener</listener-class>
+    </listener>-->
+
+    <!-- MIME Type Mappings -->
+    <mime-mapping>
+        <extension>css</extension>
+        <mime-type>text/css</mime-type>
+    </mime-mapping>
+
+    <mime-mapping>
+        <extension>js</extension>
+        <mime-type>text/javascript</mime-type>
+    </mime-mapping>
+
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+
+    <!-- Resource References -->
+
+    <!-- Database Connection Pool -->
+    <resource-ref>
+        <description>Forum Database Connection Pool</description>
+        <res-ref-name>jdbc/ForumDB</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+
+    <!-- Environment Entries -->
+    <env-entry>
+        <env-entry-name>forum/maxFileUploadSize</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>5242880</env-entry-value>
+    </env-entry>
+
+    <env-entry>
+        <env-entry-name>forum/logLevel</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>INFO</env-entry-value>
+    </env-entry>
+
+    <!-- JSP Configuration -->
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+            <scripting-invalid>false</scripting-invalid>
+            <include-prelude>/WEB-INF/jsp/includes/taglibs.jsp</include-prelude>
+        </jsp-property-group>
+
+        <taglib>
+            <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+            <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://java.sun.com/jsp/jstl/fmt</taglib-uri>
+            <taglib-location>/WEB-INF/tld/fmt.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
+</web-app>
