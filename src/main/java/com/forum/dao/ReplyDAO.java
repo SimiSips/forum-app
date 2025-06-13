@@ -15,8 +15,8 @@ import java.util.logging.Logger;
  * Handles all database operations related to replies
  *
  * @author Simphiwe Radebe
- * @version 1.0
- * @since 2025-06-03
+ * @version 1.2
+ * @since 2025-06-04
  */
 public class ReplyDAO {
 

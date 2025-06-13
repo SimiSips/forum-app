@@ -428,7 +428,7 @@
 
             <div class="border-t border-gray-800 mt-8 pt-8 text-center">
                 <p class="text-gray-400">
-                    &copy; 2025 Forum Application. Built with ❤️ for Academic Excellence.
+                    &copy; 2025 Forum Application. Built with ❤️ by Simphiwe Radebe.
                 </p>
             </div>
         </div>

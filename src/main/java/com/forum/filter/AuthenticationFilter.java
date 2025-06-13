@@ -13,8 +13,8 @@ import java.util.logging.Logger;
  * Ensures users are logged in before accessing protected resources
  *
  * @author Simphiwe Radebe
- * @version 1.0
- * @since 2025-06-03
+ * @version 1.2
+ * @since 2025-06-04
  */
 @WebFilter(filterName = "AuthenticationFilter", urlPatterns = {
         "/forum/*",

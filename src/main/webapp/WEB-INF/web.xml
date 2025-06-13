@@ -11,14 +11,13 @@
     <!-- Application Description -->
     <description>
         Advanced Java Programming Forum Application
-        Created by: Simphiwe Radebe
+        Created by: Simphiwe Radebe : Module: ITHCA0
         A distributed forum application with JSP/Servlets frontend and web services backend
     </description>
 
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
-        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <!-- Context Parameters -->

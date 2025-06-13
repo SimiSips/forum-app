@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * Implements singleton pattern for efficient connection management
  *
  * @author Simphiwe Radebe
- * @version 1.0
+ * @version 1.2
  * @since 2025-06-03
  */
 public class DatabaseConfig {

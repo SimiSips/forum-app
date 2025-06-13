@@ -3,8 +3,8 @@
  * Client-side functionality for enhanced user experience
  *
  * @author Simphiwe Radebe
- * @version 1.0
- * @since 2025-06-03
+ * @version 1.3
+ * @since 2025-06-06
  */
 
 // Global forum application object
@@ -13,7 +13,7 @@ const ForumApp = {
     config: {
         maxCommentLength: 2000,
         maxReplyLength: 1000,
-        autoSaveInterval: 30000, // 30 seconds
+        autoSaveInterval: 30000,
         animationDuration: 300
     },
 
