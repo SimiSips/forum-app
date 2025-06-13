@@ -23,3 +23,7 @@
 [2025-06-13 23:02:24] USER_LOGIN | UserID: 4 | Email: sims@gmail.com
 [2025-06-13 23:07:07] USER_LOGIN | UserID: 4 | Email: sims@gmail.com
 [2025-06-13 23:19:39] USER_LOGIN | UserID: 4 | Email: sims@gmail.com
+[2025-06-13 23:32:27] USER_REGISTERED | UserID: 5 | Email: johnny@gmail.com | Name: Johnny Doe
+[2025-06-13 23:32:34] USER_LOGIN | UserID: 5 | Email: johnny@gmail.com
+[2025-06-13 23:33:39] USER_LOGIN | UserID: 5 | Email: johnny@gmail.com
+[2025-06-13 23:33:49] USER_LOGIN | UserID: 4 | Email: sims@gmail.com
